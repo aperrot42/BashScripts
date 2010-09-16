@@ -52,7 +52,7 @@ echo `time $3multiScaleLoGDistanceImageFilter3D $1_Preprocess_$RADIUS.mha $1_For
 
 #extract maximas (seeds) MLOG
 echo "[Extract MLOG seeds]"
-echo `time $3localMaxExtract $1_CompMLOG_$RADIUS.mha $1_Foreground_$RADIUS.mha $1_SeedMLOG_$RADIUS.txt $1_NucleiImageMLOG_$RADIUS.mha $RADIUSMAX 0.02 2500`
+echo `time $3localMaxExtract $1_CompMLOG_$RADIUS.mha $1_Foreground_$RADIUS.mha $1_SeedMLOG_$RADIUS.txt $1_NucleiImageMLOG_$RADIUS.mha 3. 0.02 2500`
 
 #write image for visual comparison
 echo "[Write image with MLoG seeds]"
