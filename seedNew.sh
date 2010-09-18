@@ -33,34 +33,42 @@ echo `time $3ResampleImage  $2_Median.mha $2_Resampled.mha 5 255 5`
 
 #threshold nuclei for filtering seeds
 echo "[threshold Nuclei]"
-echo `time $3BinaryThresholdFiltering $1_Resampled.mha $1_Thresholded.mha 2 255`
+echo `time $3BinaryThresholdFiltering $1_Resampled.mha $1_Thresholded.mha 3 255`
 
 
 #improve membrane
 echo "[improve membrane 1]"
-echo `time $3multiscalePlateMeasureImageFilter $2_Resampled.mha $2_Improved.mha 0.5 0.5 0`
+echo `time $3multiscalePlateMeasureImageFilter $2_Resampled.mha $2_Improved.mha 0.5 0.5 1 $2_Eigen.mha `
 
 echo "[improve membrane 2]"
-echo `time $3membraneVotingField3D $2_Improved.mha $2_eigenMatrix.mha $2_saliency.mha 1`
+echo `time $3membraneVotingField3D $2_Improved.mha $2_Eigen.mha $2_Restored.mha 1`
+
+echo "[Rescale reconstructed membrane]"
+echo `time $3RescaleDoubleToUChar $2_Restored.mha $2_Restored.mha`
 
 #distance map of membrane for seeds detection
 echo "[distance map]"
-echo `time $3DistanceMapCalculation $2_Improved.mha $2_distance.mha`
+echo `time $3DistanceMapCalculation $2_Restored.mha $2_Distance.mha`
+
+echo "[Dilate distance mqp]"
+echo `time $3DilateDistanceMap $2_Distance $2_Distance_Dilated`
 
 echo "[local maximas]"
-echo `time $3LocalMaximaExtraction $2_distance.mha $2_localmax.mha 4.`
+echo `time $3LocalMaximaExtraction $2_Distance.mha $2_Localmax.mha .5 4.5`
 
 
 echo "[local maximas filtering with nuclei]"
-echo `time $3SeedsFilteringNuclei  $2_localmax.mha $1_Thresholded.mha $2_localmaxFiltNuc.mha`
+echo `time $3ImageMasking $2_Localmax.mha $1_Thresholded.mha $2_localmaxFiltNuc.mha`
 
-echo "[Seed grouping]"
-echo `time $3SeedsGrouping $2_localmaxFiltNuc.mha $2_FinalSeeds.mha $NUCLEIDIAMETER`
+#echo "[Seed grouping]"
+#echo `time $3SeedsGrouping $2_localmaxFiltNuc.mha $2_SeedNew.mha $NUCLEIDIAMETER`
+
+
 
 
 #write image for visual comparison
-#echo "[Write image with MLoG seeds]"
-#echo `$3blendImageSeeds $1 $1_SeedMLOG_$RADIUS.txt $1_SeedMLOG_$RADIUS.mha`
+#echo "[Write image with New method seeds]"
+#echo `$3blendImageSeeds $1 $1_SeedNew_$RADIUS.txt $1_SeedNew_Blended_$RADIUS.mha`
 
 #write image for visual comparison
 #echo "[Write image with Kishore seeds]"

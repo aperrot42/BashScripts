@@ -8,8 +8,8 @@
 
 
 RADIUS=$4
-WEIGHTEDRADIUSPLUS=$(echo "$4 * 0.707106781 * 1.55" | bc)
-WEIGHTEDRADIUSMINUS=$(echo "$4 * 0.707106781 * 0.45" | bc)
+WEIGHTEDRADIUSPLUS=$(echo "$4 * 0.707106781 * 1.3" | bc)
+WEIGHTEDRADIUSMINUS=$(echo "$4 * 0.707106781 * 0.7" | bc)
 RADIUSMAX=$(echo "$4 * 1.35" | bc)
 
 echo "$WEIGHTEDRADIUSPLUS"
@@ -46,7 +46,7 @@ echo `time $3seedExtract $1_Foreground_$RADIUS.mha $1_FeatureMap_$RADIUS.mha $1 
 
 #compute features MLOG
 echo "[Extract Feature MLOG]"
-echo `time $3multiScaleLoGDistanceImageFilter3D $1_Preprocess_$RADIUS.mha $1_Foreground_$RADIUS.mha $1_CompMLOG_$RADIUS.mha $WEIGHTEDRADIUSMINUS $WEIGHTEDRADIUSPLUS 15 2.2 0`
+echo `time $3multiScaleLoGDistanceImageFilter3D $1_Preprocess_$RADIUS.mha $1_Foreground_$RADIUS.mha $1_CompMLOG_$RADIUS.mha $WEIGHTEDRADIUSMINUS $WEIGHTEDRADIUSPLUS 15 2 0`
 
 #echo `time $3multiScaleLoGDistanceImageFilter3D $1_Preprocess_$RADIUS.mha $1_Foreground_$RADIUS.mha $1_CompMLOG_$RADIUS.mha 2.2 4.5 15 2.2 0`
 
